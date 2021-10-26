@@ -1,0 +1,75 @@
+---
+title: "Lab 5"
+author: "Katherine Rosencrance"
+date: "10/26/2021"
+output: 
+  html_document: 
+    toc: yes
+    theme: cerulean
+    number_sections: yes
+    code_folding: hide
+---
+
+```{r setup, include=TRUE, warning = FALSE, message = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+
+```
+# COnfidence Intervals
+
+In this section we'll learn to use the `t-test()` function as a way to return the conifidence interval using the t-distribution
+
+## Example 1
+
+Create a mock sample of observation values and find the confidence interval, then report that
+
+```{r}
+pika_mass <- c(82, 94, 110, 70, 86, 99, 102)
+
+pika_mean <- mean(pika_mass)
+
+pika_sd <- sd(pika_mass)
+
+pika_ci <- t.test(pika_mass)
+
+pika_ci
+```
+### Risky and Tedious Way:
+Mean pika mass at Paiute Pass is 91.9 g $\pm$ 13.5 g
+(mean $\pm$ 1 standard deviation, n = 7) with a 95% confidence interval of {79.4, 104.4} g.
+
+### High intitial investement but safer and better way
+
+In-line code referencing to stored objects!
+
+Use a single backtick on either side of a lowercase r to create an in-line bit of code
+
+Mean pika mass at Paiute Pass is `r round(pika_mean, 1)` g $\pm$ `r round(pika_sd, 1)` g (mean $\pm$ 1 standard deviation, n = `r length(pika_mass)`) with a 95% confidence interval of [`r pika_ci$conf.int[1]`],[`r pika_ci$conf.int[2]`] g.
+ 
+ 
+ # Two- sample t-test
+ 
+ Use a two sample t test to test the null hypothesis that samples were drawn from populations with the same mean (difference in means = 0).
+ 
+  - H0; means difference =0
+  - HA; means difference is not =0
+  
+  This is a two sided t test bc no directionality is implied
+  
+  ## Example 1
+  
+```{r}
+oak_trees <- c(29, 19, 22,30, 36, 45, 20, 7)
+
+pine_trees <- c(48, 49, 50, 55, 44, 45, 43)
+```
+  
+Is there a significant difference in mean heights for oak and pine trees?
+
+```{r}
+trees_t <- t.test(oak_trees, pine_trees)
+```
+
+The p-value of `r trees_t$p.value` means that there is a `r (trees_t$p.value) *100` % chance of taking random samples where their means are at least as different as the sample mean I have if they were drawn from populations with the same mean height.
+
